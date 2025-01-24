@@ -74,16 +74,18 @@ void show_list(ELEMENT *current)
     if (current == NULL)
     {
         printf("The list is empty.\n");
-        return;
     }
-
-    printf("List elements:\n");
-    while (current != NULL)
+    else
     {
-        printf("%d -> ", current->number);
-        current = current->next;
+
+        printf("List elements:\n");
+        while (current != NULL)
+        {
+            printf("%d -> ", current->number);
+            current = current->next;
+        }
+        printf("NULL\n");
     }
-    printf("NULL\n");
 }
 
 int main(void)
