@@ -25,59 +25,60 @@ void printMenu()
     printf("Choose an option: ");
 }
 
-void add_element(ELEMENT **current, int number)
+void add_element(ELEMENT **head, int number)
 {
-    if (*current == NULL)
+    if (*head == NULL)
     {
-        *current = malloc(sizeof(ELEMENT));
-        if (*current == NULL)
+        *head = malloc(sizeof(ELEMENT));
+        if (*head == NULL)
         {
             fprintf(stderr, "Memory allocation failed.\n");
             exit(EXIT_FAILURE);
         }
-        (*current)->number = number;
-        (*current)->next = NULL;
+        (*head)->number = number;
+        (*head)->next = NULL;
     }
     else
     {
-        ELEMENT *temp = *current;
-        while (temp->next != NULL)
+        ELEMENT *current = *head;
+        while (current->next != NULL)
         {
-            temp = temp->next;
+            current = current->next;
         }
-        temp->next = malloc(sizeof(ELEMENT));
-        if (temp->next == NULL)
+        current->next = malloc(sizeof(ELEMENT));
+        if (current->next == NULL)
         {
             fprintf(stderr, "Memory allocation failed.\n");
             exit(EXIT_FAILURE);
         }
-        temp->next->number = number;
-        temp->next->next = NULL;
+        current->next->number = number;
+        current->next->next = NULL;
     }
     printf("%d has been added to the list.\n", number);
 }
 
-void free_memory(ELEMENT **current)
+void free_memory(ELEMENT **head)
 {
+    ELEMENT *current = *head;
     ELEMENT *temp = NULL;
-    while (*current != NULL)
+    while (current != NULL)
     {
-        temp = (*current)->next;
-        free(*current);
-        *current = temp;
+        temp = current->next;
+        free(current);
+        current = temp;
     }
-    *current = NULL;
+    *head = NULL;
 }
 
-void show_list(ELEMENT *current)
+void show_list(ELEMENT *head)
 {
-    if (current == NULL)
+    if (head == NULL)
     {
         printf("The list is empty.\n");
     }
     else
     {
-
+        ELEMENT *current = head;
         printf("List elements:\n");
         while (current != NULL)
         {
@@ -88,15 +89,28 @@ void show_list(ELEMENT *current)
     }
 }
 
+void remove_element(ELEMENT **head, int number)
+{
+    if (*head == NULL)
+    {
+        printf("The list is empty.\n");
+    }
+    else
+    {
+    }
+}
+
 int main(void)
 {
     ELEMENT *head = NULL;
     int isRunning = 1;
+
     while (isRunning)
     {
         printMenu();
         int option_chosen = -1;
         scanf("%d", &option_chosen);
+
         switch (option_chosen)
         {
         case ADD_ELEMENT:
@@ -107,7 +121,10 @@ int main(void)
             break;
 
         case REMOVE_ELEMENT:
-            printf("Option REMOVE_ELEMENT not implemented yet.\n");
+            int number_to_remove = -1;
+            printf("Enter a value: ");
+            scanf("%d", &number_to_remove);
+            remove_element(&head, number_to_remove);
             break;
 
         case SHOW_LIST:
