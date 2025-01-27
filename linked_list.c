@@ -103,9 +103,9 @@ void remove_element(ELEMENT **head, int number)
 int main(void)
 {
     ELEMENT *head = NULL;
-    int isRunning = 1;
+    int is_running = 1;
 
-    while (isRunning)
+    while (is_running)
     {
         printMenu();
         int option_chosen = -1;
@@ -142,7 +142,7 @@ int main(void)
                 fprintf(stderr, "Error: Failed to clear the list.\n");
                 return EXIT_FAILURE;
             }
-            isRunning = 0;
+            is_running = 0;
             break;
 
         default:
