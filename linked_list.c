@@ -97,6 +97,41 @@ void remove_element(ELEMENT **head, int number)
     }
     else
     {
+        int is_found = 0;
+        ELEMENT *current = *head;
+        ELEMENT *previous = NULL;
+        while (current != NULL && !is_found)
+        {
+            if (current->number == number)
+            {
+                is_found = 1;
+                if (previous == NULL)
+                {
+                    *head = current->next;
+                }
+                else
+                {
+                    previous->next = current->next;
+                }
+
+                free(current);
+                current = NULL;
+            }
+            else
+            {
+                previous = current;
+                current = current->next;
+            }
+        }
+
+        if (is_found)
+        {
+            printf("Element %d removed successfully.\n", number);
+        }
+        else
+        {
+            printf("Element %d not found in the list.\n", number);
+        }
     }
 }
 
