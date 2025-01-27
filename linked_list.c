@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #define ADD_ELEMENT 1
 #define REMOVE_ELEMENT 2
@@ -30,11 +31,7 @@ void add_element(ELEMENT **head, int number)
     if (*head == NULL)
     {
         *head = malloc(sizeof(ELEMENT));
-        if (*head == NULL)
-        {
-            fprintf(stderr, "Memory allocation failed.\n");
-            exit(EXIT_FAILURE);
-        }
+        assert(*head != NULL);
         (*head)->number = number;
         (*head)->next = NULL;
     }
@@ -46,11 +43,7 @@ void add_element(ELEMENT **head, int number)
             current = current->next;
         }
         current->next = malloc(sizeof(ELEMENT));
-        if (current->next == NULL)
-        {
-            fprintf(stderr, "Memory allocation failed.\n");
-            exit(EXIT_FAILURE);
-        }
+        assert(current->next != NULL);
         current->next->number = number;
         current->next->next = NULL;
     }
