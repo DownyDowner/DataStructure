@@ -4,7 +4,7 @@
 
 #define ENQUEUE 1
 #define DEQUEUE 2
-#define SHOW_LIST 3
+#define SHOW_QUEUE 3
 #define EXIT 4
 
 typedef struct element
@@ -55,6 +55,25 @@ void enqueue(QUEUE **queue, int number)
     }
 }
 
+void show_queue(QUEUE *queue)
+{
+    if (queue == NULL)
+    {
+        printf("The queue is empty.\n");
+    }
+    else
+    {
+        printf("The queue has %d element(s).\n", queue->length);
+        ELEMENT *current = queue->head;
+        while (current != NULL)
+        {
+            printf("%d -> ", current->number);
+            current = current->next;
+        }
+        printf("NULL\n");
+    }
+}
+
 void free_memory(QUEUE **queue)
 {
     if (*queue != NULL)
@@ -98,8 +117,8 @@ int main(void)
             printf("Not implemented.\n");
             break;
 
-        case SHOW_LIST:
-            printf("Not implemented.\n");
+        case SHOW_QUEUE:
+            show_queue(queue);
             break;
 
         case EXIT:
