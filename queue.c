@@ -55,6 +55,27 @@ void enqueue(QUEUE **queue, int number)
     }
 }
 
+void dequeue(QUEUE **queue)
+{
+    if (queue != NULL && (*queue) != NULL && (*queue)->head != NULL)
+    {
+        ELEMENT *element_to_delete = (*queue)->head;
+        printf("Element removed: %d\n", element_to_delete->number);
+        (*queue)->head = element_to_delete->next;
+        free(element_to_delete);
+        (*queue)->length--;
+
+        if ((*queue)->length == 0)
+        {
+            (*queue)->tail = NULL;
+        }
+    }
+    else
+    {
+        printf("Queue is empty. Cannot dequeue.\n");
+    }
+}
+
 void show_queue(QUEUE *queue)
 {
     if (queue == NULL)
@@ -114,7 +135,7 @@ int main(void)
             break;
 
         case DEQUEUE:
-            printf("Not implemented.\n");
+            dequeue(&queue);
             break;
 
         case SHOW_QUEUE:
