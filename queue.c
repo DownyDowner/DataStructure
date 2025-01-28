@@ -39,10 +39,17 @@ void enqueue(QUEUE **queue, int number)
     assert(element != NULL);
     element->next = NULL;
     element->number = number;
+
     if (*queue == NULL)
     {
         *queue = malloc(sizeof(QUEUE));
         assert(*queue != NULL);
+        (*queue)->head = element;
+        (*queue)->tail = element;
+        (*queue)->length = 1;
+    }
+    else if ((*queue)->head == NULL)
+    {
         (*queue)->head = element;
         (*queue)->tail = element;
         (*queue)->length = 1;
@@ -78,7 +85,7 @@ void dequeue(QUEUE **queue)
 
 void show_queue(QUEUE *queue)
 {
-    if (queue == NULL)
+    if (queue == NULL || queue->head == NULL)
     {
         printf("The queue is empty.\n");
     }
@@ -161,4 +168,6 @@ int main(void)
             break;
         }
     }
+
+    return EXIT_SUCCESS;
 }
