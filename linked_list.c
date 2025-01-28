@@ -13,7 +13,7 @@ typedef struct element
     struct element *next;
 } ELEMENT;
 
-void printMenu()
+void print_menu()
 {
     printf("==========================\n");
     printf("     LINKED LIST MENU     \n");
@@ -135,7 +135,7 @@ int main(void)
 
     while (is_running)
     {
-        printMenu();
+        print_menu();
         int option_chosen = -1;
         scanf("%d", &option_chosen);
 
