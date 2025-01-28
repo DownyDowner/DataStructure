@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #define ENQUEUE 1
 #define DEQUEUE 2
@@ -19,7 +20,7 @@ typedef struct queue
     int length;
 } QUEUE;
 
-void printMenu()
+void print_menu()
 {
     printf("====================\n");
     printf("      QUEUE MENU     \n");
@@ -30,4 +31,94 @@ void printMenu()
     printf("4. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
+}
+
+void enqueue(QUEUE **queue, int number)
+{
+    ELEMENT *element = malloc(sizeof(ELEMENT));
+    assert(element != NULL);
+    element->next = NULL;
+    element->number = number;
+    if (*queue == NULL)
+    {
+        *queue = malloc(sizeof(QUEUE));
+        assert(*queue != NULL);
+        (*queue)->head = element;
+        (*queue)->tail = element;
+        (*queue)->length = 1;
+    }
+    else
+    {
+        (*queue)->tail->next = element;
+        (*queue)->tail = element;
+        (*queue)->length++;
+    }
+}
+
+void free_memory(QUEUE **queue)
+{
+    if (*queue != NULL)
+    {
+
+        ELEMENT *current = (*queue)->head;
+        ELEMENT *temp = NULL;
+
+        while (current != NULL)
+        {
+            temp = current->next;
+            free(current);
+            current = temp;
+        }
+
+        free(*queue);
+        *queue = NULL;
+    }
+}
+
+int main(void)
+{
+    QUEUE *queue = NULL;
+    int is_running = 1;
+    while (is_running)
+    {
+        print_menu();
+        int option_chosen = -1;
+        scanf("%d", &option_chosen);
+
+        switch (option_chosen)
+        {
+        case ENQUEUE:
+            int number_to_add = -1;
+            printf("Enter a value: ");
+            scanf("%d", &number_to_add);
+            enqueue(&queue, number_to_add);
+            break;
+
+        case DEQUEUE:
+            printf("Not implemented.\n");
+            break;
+
+        case SHOW_LIST:
+            printf("Not implemented.\n");
+            break;
+
+        case EXIT:
+            free_memory(&queue);
+            if (queue == NULL)
+            {
+                printf("Queue successfully cleared and set to NULL.\n");
+            }
+            else
+            {
+                fprintf(stderr, "Error: Failed to clear the queue.\n");
+                return EXIT_FAILURE;
+            }
+            is_running = 0;
+            break;
+
+        default:
+            printf("Invalid option. Please try again.\n");
+            break;
+        }
+    }
 }
