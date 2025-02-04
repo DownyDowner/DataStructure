@@ -79,6 +79,30 @@ void push(STACK **stack, int number)
     printf("%d pushed to stack.\n", number);
 }
 
+void pop(STACK **stack)
+{
+    if (*stack != NULL && (*stack)->head != NULL)
+    {
+        ELEMENT *element_to_delete = (*stack)->head;
+        printf("Element removed: %d\n", element_to_delete->number);
+
+        (*stack)->head = element_to_delete->next;
+        free(element_to_delete);
+        (*stack)->length--;
+
+        if ((*stack)->length == 0)
+        {
+            (*stack)->tail = NULL;
+            free(*stack);
+            *stack = NULL;
+        }
+    }
+    else
+    {
+        printf("Stack is empty. Cannot pop.\n");
+    }
+}
+
 int main(void)
 {
     STACK *stack = NULL;
