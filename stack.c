@@ -32,8 +32,29 @@ void print_menu()
     printf("Choose an option: ");
 }
 
+void free_memory(STACK **stack)
+{
+    if (*stack != NULL)
+    {
+
+        ELEMENT *current = (*stack)->head;
+        ELEMENT *temp = NULL;
+
+        while (current != NULL)
+        {
+            temp = current->next;
+            free(current);
+            current = temp;
+        }
+
+        free(*stack);
+        *stack = NULL;
+    }
+}
+
 int main(void)
 {
+    STACK *stack = NULL;
     int is_running = 1;
     while (is_running)
     {
@@ -53,6 +74,16 @@ int main(void)
             break;
 
         case EXIT:
+            free_memory(&stack);
+            if (stack == NULL)
+            {
+                printf("Stack successfully cleared and set to NULL.\n");
+            }
+            else
+            {
+                fprintf(stderr, "Error: Failed to clear the Stack.\n");
+                return EXIT_FAILURE;
+            }
             is_running = 0;
             break;
 
