@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #define PUSH 1
 #define POP 2
@@ -52,6 +53,32 @@ void free_memory(STACK **stack)
     }
 }
 
+void push(STACK **stack, int number)
+{
+    if (*stack == NULL)
+    {
+        *stack = malloc(sizeof(STACK));
+        assert(*stack != NULL);
+        (*stack)->head = NULL;
+        (*stack)->tail = NULL;
+        (*stack)->length = 0;
+    }
+
+    ELEMENT *new_element = malloc(sizeof(ELEMENT));
+    assert(new_element != NULL);
+    new_element->number = number;
+    new_element->next = (*stack)->head;
+    (*stack)->head = new_element;
+
+    if ((*stack)->tail == NULL)
+    {
+        (*stack)->tail = new_element;
+    }
+
+    (*stack)->length++;
+    printf("%d pushed to stack.\n", number);
+}
+
 int main(void)
 {
     STACK *stack = NULL;
@@ -65,6 +92,10 @@ int main(void)
         switch (option_chosen)
         {
         case PUSH:
+            int number_to_add = -1;
+            printf("Enter a value: ");
+            scanf("%d", &number_to_add);
+            push(&stack, number_to_add);
             break;
 
         case POP:
