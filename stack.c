@@ -103,6 +103,25 @@ void pop(STACK **stack)
     }
 }
 
+void show_stack(STACK *stack)
+{
+    if (stack == NULL || stack->head == NULL)
+    {
+        printf("The stack is empty.\n");
+    }
+    else
+    {
+        printf("The stack has %d element(s).\n", stack->length);
+        ELEMENT *current = stack->head;
+        while (current != NULL)
+        {
+            printf("%d -> ", current->number);
+            current = current->next;
+        }
+        printf("NULL\n");
+    }
+}
+
 int main(void)
 {
     STACK *stack = NULL;
@@ -123,9 +142,11 @@ int main(void)
             break;
 
         case POP:
+            pop(&stack);
             break;
 
         case SHOW_STACK:
+            show_stack(stack);
             break;
 
         case EXIT:
