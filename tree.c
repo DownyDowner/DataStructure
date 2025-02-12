@@ -5,7 +5,8 @@
 #define ADD_ELEMENT 1
 #define DISPLAY_PREORDER 2
 #define DISPLAY_IN_ORDER 3
-#define EXIT 4
+#define DISPLAY_POST_ORDER 4
+#define EXIT 5
 
 typedef struct node
 {
@@ -22,7 +23,8 @@ void print_menu()
     printf("1. Add an element\n");
     printf("2. Display in preorder\n");
     printf("3. Display in in-order\n");
-    printf("4. Exit\n");
+    printf("4. Display in post-order\n");
+    printf("5. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
 }
@@ -71,6 +73,15 @@ void display_in_order(NODE *root)
     printf("%d ", root->number);
     if (root->right != NULL)
         display_in_order(root->right);
+}
+
+void display_post_order(NODE *root)
+{
+    if (root->left != NULL)
+        display_post_order(root->left);
+    if (root->right != NULL)
+        display_post_order(root->right);
+    printf("%d ", root->number);
 }
 
 void free_tree(NODE **root)
@@ -123,6 +134,18 @@ int main(void)
             else
             {
                 display_in_order(root);
+                printf("\n");
+            }
+            break;
+
+        case DISPLAY_POST_ORDER:
+            if (root == NULL)
+            {
+                printf("The tree is empty.\n");
+            }
+            else
+            {
+                display_post_order(root);
                 printf("\n");
             }
             break;
