@@ -4,7 +4,8 @@
 
 #define ADD_ELEMENT 1
 #define DISPLAY_PREORDER 2
-#define EXIT 3
+#define DISPLAY_IN_ORDER 3
+#define EXIT 4
 
 typedef struct node
 {
@@ -19,8 +20,9 @@ void print_menu()
     printf("     TREE MENU     \n");
     printf("===================\n");
     printf("1. Add an element\n");
-    printf("2. Display in Preorder\n");
-    printf("3. Exit\n");
+    printf("2. Display in preorder\n");
+    printf("3. Display in in-order\n");
+    printf("4. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
 }
@@ -62,6 +64,15 @@ void display_preorder(NODE *root)
         display_preorder(root->right);
 }
 
+void display_in_order(NODE *root)
+{
+    if (root->left != NULL)
+        display_preorder(root->left);
+    printf("%d ", root->number);
+    if (root->right != NULL)
+        display_preorder(root->right);
+}
+
 void free_tree(NODE **root)
 {
     if (*root != NULL)
@@ -94,10 +105,26 @@ int main(void)
 
         case DISPLAY_PREORDER:
             if (root == NULL)
+            {
                 printf("The tree is empty.\n");
+            }
             else
+            {
                 display_preorder(root);
-            printf("\n");
+                printf("\n");
+            }
+            break;
+
+        case DISPLAY_IN_ORDER:
+            if (root == NULL)
+            {
+                printf("The tree is empty.\n");
+            }
+            else
+            {
+                display_in_order(root);
+                printf("\n");
+            }
             break;
 
         case EXIT:
