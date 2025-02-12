@@ -95,6 +95,16 @@ void free_tree(NODE **root)
     }
 }
 
+int is_tree_empty(NODE *root)
+{
+    if (root == NULL)
+    {
+        printf("The tree is empty.\n");
+        return 1;
+    }
+    return 0;
+}
+
 int main(void)
 {
     NODE *root = NULL;
@@ -115,11 +125,7 @@ int main(void)
             break;
 
         case DISPLAY_PREORDER:
-            if (root == NULL)
-            {
-                printf("The tree is empty.\n");
-            }
-            else
+            if (!is_tree_empty(root))
             {
                 display_preorder(root);
                 printf("\n");
@@ -127,11 +133,7 @@ int main(void)
             break;
 
         case DISPLAY_IN_ORDER:
-            if (root == NULL)
-            {
-                printf("The tree is empty.\n");
-            }
-            else
+            if (!is_tree_empty(root))
             {
                 display_in_order(root);
                 printf("\n");
@@ -139,11 +141,7 @@ int main(void)
             break;
 
         case DISPLAY_POST_ORDER:
-            if (root == NULL)
-            {
-                printf("The tree is empty.\n");
-            }
-            else
+            if (!is_tree_empty(root))
             {
                 display_post_order(root);
                 printf("\n");
