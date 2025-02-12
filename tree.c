@@ -3,7 +3,8 @@
 #include <assert.h>
 
 #define ADD_ELEMENT 1
-#define EXIT 2
+#define DISPLAY_PREORDER 2
+#define EXIT 3
 
 typedef struct node
 {
@@ -18,7 +19,8 @@ void print_menu()
     printf("     TREE MENU     \n");
     printf("===================\n");
     printf("1. Add an element\n");
-    printf("2. Exit\n");
+    printf("2. Display in Preorder\n");
+    printf("3. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
 }
@@ -51,6 +53,15 @@ NODE *add_element(NODE *root, int number)
     return root;
 }
 
+void display_preorder(NODE *root)
+{
+    printf("%d ", root->number);
+    if (root->left != NULL)
+        display_preorder(root->left);
+    if (root->right != NULL)
+        display_preorder(root->right);
+}
+
 void free_tree(NODE **root)
 {
     if (*root != NULL)
@@ -75,13 +86,19 @@ int main(void)
         switch (option_chosen)
         {
         case ADD_ELEMENT:
-        {
             int number_to_add = -1;
             printf("Enter a value: ");
             scanf("%d", &number_to_add);
             root = add_element(root, number_to_add);
-        }
-        break;
+            break;
+
+        case DISPLAY_PREORDER:
+            if (root == NULL)
+                printf("The tree is empty.\n");
+            else
+                display_preorder(root);
+            printf("\n");
+            break;
 
         case EXIT:
             free_tree(&root);
