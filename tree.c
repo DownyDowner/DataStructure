@@ -67,10 +67,10 @@ void display_preorder(NODE *root)
 void display_in_order(NODE *root)
 {
     if (root->left != NULL)
-        display_preorder(root->left);
+        display_in_order(root->left);
     printf("%d ", root->number);
     if (root->right != NULL)
-        display_preorder(root->right);
+        display_in_order(root->right);
 }
 
 void free_tree(NODE **root)
