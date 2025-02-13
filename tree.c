@@ -3,10 +3,11 @@
 #include <assert.h>
 
 #define ADD_ELEMENT 1
-#define DISPLAY_PREORDER 2
-#define DISPLAY_IN_ORDER 3
-#define DISPLAY_POST_ORDER 4
-#define EXIT 5
+#define REMOVE_ELEMENT 2
+#define DISPLAY_PREORDER 3
+#define DISPLAY_IN_ORDER 4
+#define DISPLAY_POST_ORDER 5
+#define EXIT 6
 
 typedef struct node
 {
@@ -21,10 +22,11 @@ void print_menu()
     printf("     TREE MENU     \n");
     printf("===================\n");
     printf("1. Add an element\n");
-    printf("2. Display in preorder\n");
-    printf("3. Display in in-order\n");
-    printf("4. Display in post-order\n");
-    printf("5. Exit\n");
+    printf("2. Remove an element\n");
+    printf("3. Display in preorder\n");
+    printf("4. Display in in-order\n");
+    printf("5. Display in post-order\n");
+    printf("6. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
 }
@@ -55,6 +57,48 @@ NODE *add_element(NODE *root, int number)
     }
 
     return root;
+}
+
+void remove_element(NODE **node, int number)
+{
+    if (*node == NULL)
+        return;
+
+    if (number < (*node)->number)
+    {
+        remove_element(&((*node)->left), number);
+    }
+    else if (number > (*node)->number)
+    {
+        remove_element(&((*node)->right), number);
+    }
+    else
+    {
+        // Node with only one child or no child
+        if ((*node)->left == NULL)
+        {
+            NODE *temp = *node;
+            *node = (*node)->right;
+            free(temp);
+        }
+        else if ((*node)->right == NULL)
+        {
+            NODE *temp = *node;
+            *node = (*node)->left;
+            free(temp);
+        }
+        else
+        {
+            // Node with two children
+            NODE *temp = (*node)->right;
+            while (temp->left != NULL)
+            {
+                temp = temp->left;
+            }
+            (*node)->number = temp->number;
+            remove_element(&((*node)->right), temp->number);
+        }
+    }
 }
 
 void display_preorder(NODE *root)
@@ -122,6 +166,16 @@ int main(void)
             printf("Enter a value: ");
             scanf("%d", &number_to_add);
             root = add_element(root, number_to_add);
+            break;
+
+        case REMOVE_ELEMENT:
+            if (!is_tree_empty(root))
+            {
+                int number_to_remove = -1;
+                printf("Enter a value: ");
+                scanf("%d", &number_to_remove);
+                remove_element(&root, number_to_remove);
+            }
             break;
 
         case DISPLAY_PREORDER:
