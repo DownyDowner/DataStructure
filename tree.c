@@ -101,6 +101,15 @@ void remove_element(NODE **node, int number)
     }
 }
 
+int get_tree_size(NODE *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+    return 1 + get_tree_size(root->left) + get_tree_size(root->right);
+}
+
 void display_preorder(NODE *root)
 {
     printf("%d ", root->number);
@@ -181,6 +190,7 @@ int main(void)
         case DISPLAY_PREORDER:
             if (!is_tree_empty(root))
             {
+                printf("Tree size: %d\n", get_tree_size(root));
                 display_preorder(root);
                 printf("\n");
             }
@@ -189,6 +199,7 @@ int main(void)
         case DISPLAY_IN_ORDER:
             if (!is_tree_empty(root))
             {
+                printf("Tree size: %d\n", get_tree_size(root));
                 display_in_order(root);
                 printf("\n");
             }
@@ -197,6 +208,7 @@ int main(void)
         case DISPLAY_POST_ORDER:
             if (!is_tree_empty(root))
             {
+                printf("Tree size: %d\n", get_tree_size(root));
                 display_post_order(root);
                 printf("\n");
             }
