@@ -3,10 +3,12 @@
 #include <assert.h>
 
 #define ADD_ELEMENT 1
-#define DISPLAY_PREORDER 2
-#define DISPLAY_IN_ORDER 3
-#define DISPLAY_POST_ORDER 4
-#define EXIT 5
+#define REMOVE_ELEMENT 2
+#define DISPLAY_PREORDER 3
+#define DISPLAY_IN_ORDER 4
+#define DISPLAY_POST_ORDER 5
+#define SEARCH 6
+#define EXIT 7
 
 typedef struct node
 {
@@ -21,10 +23,12 @@ void print_menu()
     printf("     TREE MENU     \n");
     printf("===================\n");
     printf("1. Add an element\n");
-    printf("2. Display in preorder\n");
-    printf("3. Display in in-order\n");
-    printf("4. Display in post-order\n");
-    printf("5. Exit\n");
+    printf("2. Remove an element\n");
+    printf("3. Display in preorder\n");
+    printf("4. Display in in-order\n");
+    printf("5. Display in post-order\n");
+    printf("6. Search an element\n");
+    printf("7. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
 }
@@ -57,6 +61,57 @@ NODE *add_element(NODE *root, int number)
     return root;
 }
 
+void remove_element(NODE **node, int number)
+{
+    if (*node == NULL)
+        return;
+
+    if (number < (*node)->number)
+    {
+        remove_element(&((*node)->left), number);
+    }
+    else if (number > (*node)->number)
+    {
+        remove_element(&((*node)->right), number);
+    }
+    else
+    {
+        // Node with only one child or no child
+        if ((*node)->left == NULL)
+        {
+            NODE *temp = *node;
+            *node = (*node)->right;
+            free(temp);
+        }
+        else if ((*node)->right == NULL)
+        {
+            NODE *temp = *node;
+            *node = (*node)->left;
+            free(temp);
+        }
+        else
+        {
+            // Node with two children
+            NODE *temp = (*node)->right;
+            while (temp->left != NULL)
+            {
+                temp = temp->left;
+            }
+            (*node)->number = temp->number;
+            remove_element(&((*node)->right), temp->number);
+        }
+    }
+}
+
+int get_tree_size(NODE *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+    return 1 + get_tree_size(root->left) + get_tree_size(root->right);
+}
+
 void display_preorder(NODE *root)
 {
     printf("%d ", root->number);
@@ -84,6 +139,14 @@ void display_post_order(NODE *root)
     printf("%d ", root->number);
 }
 
+NODE *search(NODE *root, int number)
+{
+    if (root == NULL || root->number == number)
+        return root;
+
+    return (number < root->number) ? search(root->left, number) : search(root->right, number);
+}
+
 void free_tree(NODE **root)
 {
     if (*root != NULL)
@@ -93,6 +156,16 @@ void free_tree(NODE **root)
         free(*root);
         *root = NULL;
     }
+}
+
+int is_tree_empty(NODE *root)
+{
+    if (root == NULL)
+    {
+        printf("The tree is empty.\n");
+        return 1;
+    }
+    return 0;
 }
 
 int main(void)
@@ -114,39 +187,54 @@ int main(void)
             root = add_element(root, number_to_add);
             break;
 
-        case DISPLAY_PREORDER:
-            if (root == NULL)
+        case REMOVE_ELEMENT:
+            if (!is_tree_empty(root))
             {
-                printf("The tree is empty.\n");
+                int number_to_remove = -1;
+                printf("Enter a value: ");
+                scanf("%d", &number_to_remove);
+                remove_element(&root, number_to_remove);
             }
-            else
+            break;
+
+        case DISPLAY_PREORDER:
+            if (!is_tree_empty(root))
             {
+                printf("Tree size: %d\n", get_tree_size(root));
                 display_preorder(root);
                 printf("\n");
             }
             break;
 
         case DISPLAY_IN_ORDER:
-            if (root == NULL)
+            if (!is_tree_empty(root))
             {
-                printf("The tree is empty.\n");
-            }
-            else
-            {
+                printf("Tree size: %d\n", get_tree_size(root));
                 display_in_order(root);
                 printf("\n");
             }
             break;
 
         case DISPLAY_POST_ORDER:
-            if (root == NULL)
+            if (!is_tree_empty(root))
             {
-                printf("The tree is empty.\n");
-            }
-            else
-            {
+                printf("Tree size: %d\n", get_tree_size(root));
                 display_post_order(root);
                 printf("\n");
+            }
+            break;
+
+        case SEARCH:
+            if (!is_tree_empty(root))
+            {
+                int number_to_search = -1;
+                printf("Enter a value: ");
+                scanf("%d", &number_to_search);
+                NODE *address_element = search(root, number_to_search);
+                if (address_element == NULL)
+                    printf("%d is not in the tree.\n", number_to_search);
+                else
+                    printf("The element has the address %p.\n", address_element);
             }
             break;
 
