@@ -7,7 +7,8 @@
 #define DISPLAY_PREORDER 3
 #define DISPLAY_IN_ORDER 4
 #define DISPLAY_POST_ORDER 5
-#define EXIT 6
+#define SEARCH 6
+#define EXIT 7
 
 typedef struct node
 {
@@ -26,7 +27,8 @@ void print_menu()
     printf("3. Display in preorder\n");
     printf("4. Display in in-order\n");
     printf("5. Display in post-order\n");
-    printf("6. Exit\n");
+    printf("6. Search an element\n");
+    printf("7. Exit\n");
     printf("====================\n");
     printf("Choose an option: ");
 }
@@ -137,6 +139,14 @@ void display_post_order(NODE *root)
     printf("%d ", root->number);
 }
 
+NODE *search(NODE *root, int number)
+{
+    if (root == NULL || root->number == number)
+        return root;
+
+    return (number < root->number) ? search(root->left, number) : search(root->right, number);
+}
+
 void free_tree(NODE **root)
 {
     if (*root != NULL)
@@ -211,6 +221,20 @@ int main(void)
                 printf("Tree size: %d\n", get_tree_size(root));
                 display_post_order(root);
                 printf("\n");
+            }
+            break;
+
+        case SEARCH:
+            if (!is_tree_empty(root))
+            {
+                int number_to_search = -1;
+                printf("Enter a value: ");
+                scanf("%d", &number_to_search);
+                NODE *address_element = search(root, number_to_search);
+                if (address_element == NULL)
+                    printf("%d is not in the tree.\n", number_to_search);
+                else
+                    printf("The element has the address %p.\n", address_element);
             }
             break;
 
